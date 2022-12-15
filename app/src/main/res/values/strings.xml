@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">AdsEarn</string>
+    <string name="publish">Publish</string>
+    <string name="view">View</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="viewer">Viewer</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="adsearn"><b>Ads</b>Earn</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
+    <string name="enter_the_title_of_ad">Enter the title of Ad</string>
+    <string name="question">Question</string>
+    <string name="option_1">Option 1</string>
+    <string name="option_2">Option 2</string>
+    <string name="option_3">Option 3</string>
+    <string name="option_4">Option 4</string>
+    <string name="upload">Upload</string>
+    <string name="todo">TODO</string>
+    <string name="abhiram">Abhiram</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="chandler">Chandler</string>
+    <string name="Save">Save</string>
+    <string name="or">or</string>
+    <string name="login_here">Login Here</string>
+</resources>
