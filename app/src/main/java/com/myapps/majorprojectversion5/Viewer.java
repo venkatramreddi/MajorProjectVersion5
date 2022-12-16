@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import com.myapps.majorprojectversion5.TitleClass;
 
 
 public class Viewer extends Fragment {
@@ -56,29 +57,10 @@ public class Viewer extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                
             }
         });
 
         return view;
-    }
-}
-
-class TitleClass {
-    String title;
-
-    public TitleClass() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public TitleClass(String title) {
-        this.title = title;
     }
 }
