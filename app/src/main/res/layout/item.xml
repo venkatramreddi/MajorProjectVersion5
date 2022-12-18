@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     android:layout_margin="16dp"
+    android:id="@+id/container"
     app:cardElevation="8dp">
 
     <TextView

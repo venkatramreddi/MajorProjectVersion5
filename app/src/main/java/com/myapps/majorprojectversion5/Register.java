@@ -5,8 +5,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,8 +21,8 @@ import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
-    private final DatabaseReference refUsersData = FirebaseDatabase.getInstance("https://majorprojectversion5-default-rtdb.firebaseio.com/").getReference("UsersData");
-    private final DatabaseReference refWallet = FirebaseDatabase.getInstance("https://majorprojectversion5-default-rtdb.firebaseio.com/").getReference("Wallet");
+    DatabaseReference refUsersData = FirebaseDatabase.getInstance("https://majorprojectversion5-default-rtdb.firebaseio.com/").getReference("UsersData");
+    DatabaseReference refWallet = FirebaseDatabase.getInstance("https://majorprojectversion5-default-rtdb.firebaseio.com/").getReference("Wallet");
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private TextInputEditText etEmail, etUsername, etPassword;
 
@@ -51,9 +54,11 @@ public class Register extends AppCompatActivity {
                             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                                 if (task.isComplete()) {
                                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                    String uid = firebaseUser.getUid();
                                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                     myEdit.putString("uid", Objects.requireNonNull(firebaseUser).getUid());
+                                    myEdit.putString("ad", "1");
                                     myEdit.apply();
 
                                     UserData userData = new UserData(email, username, password, firebaseUser.getUid());
@@ -66,14 +71,18 @@ public class Register extends AppCompatActivity {
                                         }
                                     });
 
-                                    refWallet.child(firebaseUser.getUid()).child("coins").setValue(0).addOnCompleteListener(task12 -> {
-                                        if (task12.isComplete()) {
-                                            Toast.makeText(getApplicationContext(), "Wallet Created Successfully", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(), "Error creating wallet for the user", Toast.LENGTH_LONG).show();
+                                    refWallet.child(firebaseUser.getUid()).child("coins").setValue("0").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isComplete()) {
+                                                Toast.makeText(getApplicationContext(), "Wallet Created Successfully!", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Failed Creating Wallet", Toast.LENGTH_LONG).show();
+                                            }
                                         }
                                     });
-                                    Toast.makeText(getApplicationContext(), "Account Creation Successful!", Toast.LENGTH_LONG).show();
+
+
                                     startActivity(new Intent(getApplicationContext(), Main.class));
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Failed Creating Account!", Toast.LENGTH_LONG).show();
@@ -93,10 +102,9 @@ public class Register extends AppCompatActivity {
             });
 
 
+        }
 
     }
-
-}
 }
 
 class UserData {
@@ -139,5 +147,24 @@ class UserData {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+}
+
+class Coins {
+    String coins;
+
+    public String getCoins() {
+        return coins;
+    }
+
+    public void setCoins(String coins) {
+        this.coins = coins;
+    }
+
+    public Coins() {
+    }
+
+    public Coins(String coins) {
+        this.coins = coins;
     }
 }

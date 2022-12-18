@@ -26,4 +26,17 @@
     <string name="Save">Save</string>
     <string name="or">or</string>
     <string name="login_here">Login Here</string>
+    <string name="what_was_the_sales_called">What was the sales called?</string>
+    <string name="option1">Option1</string>
+    <string name="Option3">Option3</string>
+    <string name="option4">Option4</string>
+    <string name="option2">Option2</string>
+    <string name="enter_your_answer_as_1_2_3_or_4">Enter your answer as 1, 2, 3 or 4</string>
+    <string name="_1">1.</string>
+    <string name="submit">Submit</string>
+    <string name="uername">Username</string>
+    <string name="amount">2000</string>
+    <string name="wallet">Wallet :</string>
+    <string name="coinsymbol">1FA99</string>
+    <string name="coins">Coins</string>
 </resources>

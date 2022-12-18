@@ -51,16 +51,8 @@ public class Publish extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_publish, container, false);
 
-
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", Context.MODE_PRIVATE);
         uid = sharedPreferences.getString("uid", "");
-
-//        Toast.makeText(requireActivity(), uid, Toast.LENGTH_LONG).show();
-
-//        MaterialToolbar toolbar = view.findViewById(R.id.toolBarPublish);
-//        toolbar.setTitle("Publish");
-//        toolbar.setTitleTextColor(Color.WHITE);
-
 
         etTitle = view.findViewById(R.id.etTitle);
         etQuestion = view.findViewById(R.id.etQuestion);
@@ -125,6 +117,7 @@ public class Publish extends Fragment {
 
         btnUpload.setOnClickListener(view13 -> {
             if (imageUri != null) {
+                progressBar.setVisibility(View.INVISIBLE);
                 uploadToFirebase(imageUri);
                 ivUpload.setImageResource(R.drawable.ic_baseline_image_24);
                 etOption1.setText("");
@@ -156,14 +149,17 @@ public class Publish extends Fragment {
         String option3 = Objects.requireNonNull(etOption3.getText()).toString();
         String option4 = Objects.requireNonNull(etOption4.getText()).toString();
 
+
         StorageReference fileRef = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
         long l = System.currentTimeMillis();
         fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-
+            progressBar.setVisibility(View.VISIBLE);
             UrlClass urlClass = new UrlClass(uri.toString());
             AdDetails adDetails = new AdDetails(title, question, option1, option2, option3, option4, String.valueOf(correctAnswer), String.valueOf(urlClass.url));
             if (!refAdsData.child(title).setValue(adDetails).isComplete()) {
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(getActivity(), "Ad Uploaded Successfully", Toast.LENGTH_LONG).show();
+
             } else {
                 Toast.makeText(getActivity(), "Failed Uploading Ad", Toast.LENGTH_LONG).show();
             }
@@ -254,6 +250,14 @@ class AdDetails {
         this.option4 = option4;
         this.correctAnswer = correctAnswer;
         this.imageUrl = imageUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getImageUrl() {

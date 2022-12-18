@@ -1,10 +1,15 @@
 package com.myapps.majorprojectversion5;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,7 +26,7 @@ import java.util.ArrayList;
 import com.myapps.majorprojectversion5.TitleClass;
 
 
-public class Viewer extends Fragment {
+public class Viewer extends Fragment implements SelectListener {
 
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
@@ -39,7 +44,7 @@ public class Viewer extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         list = new ArrayList<>();
-        myAdapter = new MyAdapter(requireActivity(), list);
+        myAdapter = new MyAdapter(requireActivity(), list, this);
         recyclerView.setAdapter(myAdapter);
 
 
@@ -62,5 +67,37 @@ public class Viewer extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onItemClicked(TitleClass titleClass) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(requireActivity());
+        builder1.setMessage("Sure you want to visit?");
+        builder1.setTitle("Confirm");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(requireActivity(), WebViewAd.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("title", titleClass.getTitle());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+//        Toast.makeText(requireActivity(), titleClass.getTitle(), Toast.LENGTH_LONG).show();
     }
 }
